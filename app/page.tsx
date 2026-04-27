@@ -165,8 +165,13 @@ export default function Home() {
               >
                 <Link
                   href={`/vendor/${v.slug}`}
-                  className="group flex flex-col items-start p-4 border border-line rounded-md hover:border-foreground transition bg-card h-full"
+                  className="group relative flex flex-col items-start p-4 border border-line rounded-md hover:border-foreground transition bg-card h-full"
                 >
+                  {v.founder && (
+                    <span className="absolute top-2 right-2 text-[9px] uppercase tracking-wide bg-foreground text-background px-1.5 py-0.5 rounded">
+                      Founder
+                    </span>
+                  )}
                   <div
                     className="w-10 h-10 rounded-full mb-3 group-hover:scale-110 transition-transform"
                     style={{ backgroundColor: v.accent }}

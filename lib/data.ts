@@ -8,6 +8,7 @@ export type Vendor = {
   joined: string;
   bio: string;
   accent: string;
+  founder?: boolean;
 };
 
 export type Product = {
@@ -41,6 +42,18 @@ export const categories = [
 ];
 
 export const vendors: Vendor[] = [
+  {
+    slug: "wzyotb",
+    name: "wzyotb",
+    tagline: "Founder · sells the keys",
+    location: "California",
+    rating: 5.0,
+    reviewCount: 47,
+    joined: "2026",
+    bio: "Founder of WoozyKnows. I built this. I also build sites, do strategy calls, and plug people into my network. If you want in, talk to me first.",
+    accent: "#0a0a0a",
+    founder: true,
+  },
   {
     slug: "big-bro-wholesale",
     name: "Big Bro Wholesale",
@@ -198,6 +211,64 @@ export const vendors: Vendor[] = [
 ];
 
 export const products: Product[] = [
+  // wzyotb — Founder
+  {
+    slug: "wzyotb-strategy-call",
+    vendorSlug: "wzyotb",
+    title: "Strategy call — 60 min",
+    category: "Consulting",
+    price: 300,
+    priceType: "fixed",
+    blurb: "One hour. You bring the problem. I bring the play.",
+    bullets: ["60 min", "Pre-call brief", "Followup on Slack"],
+    delivery: "Within 1 week",
+    imageBg: "#0a0a0a",
+    imageEmoji: "✦",
+    tags: ["call", "strategy"],
+  },
+  {
+    slug: "wzyotb-website-build",
+    vendorSlug: "wzyotb",
+    title: "Custom website build",
+    category: "Web & Tech",
+    price: 2500,
+    priceType: "from",
+    blurb: "Site like this one. Built for what you actually do, not a template.",
+    bullets: ["Design + dev", "Ships in 2 weeks", "Vercel + analytics"],
+    delivery: "2 weeks",
+    imageBg: "#1a1a1a",
+    imageEmoji: "▤",
+    tags: ["site", "founder"],
+  },
+  {
+    slug: "wzyotb-plug-me-in",
+    vendorSlug: "wzyotb",
+    title: "Plug me in",
+    category: "Consulting",
+    price: 0,
+    priceType: "inquiry",
+    blurb: "Tell me what you need. I make the intro. Network access, no markup.",
+    bullets: ["Curated intros", "From my network", "Quote on the ask"],
+    delivery: "Custom",
+    imageBg: "#2a2a2a",
+    imageEmoji: "→",
+    tags: ["network", "intros"],
+  },
+  {
+    slug: "wzyotb-quarterly-mentor",
+    vendorSlug: "wzyotb",
+    title: "Quarterly mentorship",
+    category: "Consulting",
+    price: 0,
+    priceType: "inquiry",
+    blurb: "I work with you for a quarter. Weekly calls, Slack on lock, real moves.",
+    bullets: ["Weekly calls", "Slack always on", "Quote on scope"],
+    delivery: "Custom",
+    imageBg: "#3a3a3a",
+    imageEmoji: "◆",
+    tags: ["mentor", "founder"],
+  },
+
   // Big Bro Wholesale — Flips
   {
     slug: "case-100-charger-cables",

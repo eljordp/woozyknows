@@ -25,8 +25,15 @@ export default async function VendorPage({
           style={{ backgroundColor: vendor.accent }}
         />
         <div>
-          <div className="text-xs uppercase tracking-wide text-muted mb-1">
-            Vendor since {vendor.joined} · {vendor.location}
+          <div className="text-xs uppercase tracking-wide text-muted mb-1 flex items-center gap-2">
+            {vendor.founder && (
+              <span className="bg-foreground text-background px-1.5 py-0.5 rounded text-[10px]">
+                Founder
+              </span>
+            )}
+            <span>
+              Vendor since {vendor.joined} · {vendor.location}
+            </span>
           </div>
           <h1 className="font-display text-4xl">{vendor.name}</h1>
           <div className="text-muted mt-1">{vendor.tagline}</div>
