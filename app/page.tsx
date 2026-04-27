@@ -4,9 +4,11 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { products, vendors, categories } from "@/lib/data";
+import { bundles } from "@/lib/bundles";
 import ProductCard from "@/components/ProductCard";
 import CategoryRail from "@/components/CategoryRail";
 import Ticker from "@/components/Ticker";
+import PlugMeInPrompt from "@/components/PlugMeInPrompt";
 
 export default function Home() {
   const [category, setCategory] = useState("All");
@@ -99,6 +101,12 @@ export default function Home() {
         </div>
       </section>
 
+      <section className="border-b border-line bg-foreground/[0.02]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+          <PlugMeInPrompt />
+        </div>
+      </section>
+
       <CategoryRail
         categories={categories}
         active={category}
@@ -142,7 +150,74 @@ export default function Home() {
         )}
       </section>
 
-      <section className="border-t border-line mt-12">
+      <section className="border-t border-line mt-12 bg-foreground/[0.02]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
+          <div className="flex items-end justify-between mb-6">
+            <div>
+              <div className="text-xs uppercase tracking-[0.2em] text-muted mb-1">
+                Bundles
+              </div>
+              <h2 className="font-display text-2xl">Two plugs. One price.</h2>
+            </div>
+            <Link
+              href="/bundles"
+              className="text-sm text-muted hover:text-foreground transition"
+            >
+              See all bundles →
+            </Link>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {bundles.map((b, i) => (
+              <motion.div
+                key={b.slug}
+                initial={{ opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.06, duration: 0.4 }}
+                whileHover={{ y: -3 }}
+              >
+                <Link
+                  href="/bundles"
+                  className="group block border border-line rounded-md overflow-hidden bg-card hover:border-foreground transition"
+                >
+                  <div
+                    className="aspect-[4/3] flex items-center justify-center text-6xl text-white relative"
+                    style={{ backgroundColor: b.imageBg }}
+                  >
+                    <span
+                      style={{ fontFamily: "ui-serif, Georgia, serif" }}
+                      className="mix-blend-difference"
+                    >
+                      {b.imageEmoji}
+                    </span>
+                    <span className="absolute top-2 right-2 text-[10px] uppercase tracking-wide bg-foreground text-background px-1.5 py-0.5 rounded">
+                      Save ${b.originalPrice - b.bundlePrice}
+                    </span>
+                  </div>
+                  <div className="p-4">
+                    <div className="font-display text-lg group-hover:underline underline-offset-2">
+                      {b.title}
+                    </div>
+                    <div className="text-xs text-muted mt-1 line-clamp-2">
+                      {b.blurb}
+                    </div>
+                    <div className="mt-3 flex items-baseline gap-2">
+                      <span className="text-base font-medium">
+                        ${b.bundlePrice.toLocaleString()}
+                      </span>
+                      <span className="text-xs text-muted line-through">
+                        ${b.originalPrice.toLocaleString()}
+                      </span>
+                    </div>
+                  </div>
+                </Link>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="border-t border-line">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
           <div className="flex items-end justify-between mb-6">
             <h2 className="font-display text-2xl">Featured vendors</h2>

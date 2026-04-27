@@ -2,9 +2,11 @@
 
 import { useCart } from "@/lib/cart";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function CartDrawer() {
   const { isOpen, close, items, remove, subtotal } = useCart();
+  const router = useRouter();
   return (
     <>
       <div
@@ -86,10 +88,13 @@ export default function CartDrawer() {
               Inquiry items quoted separately. Taxes calculated at checkout.
             </div>
             <button
-              onClick={() => alert("Checkout coming soon — Stripe wires up next.")}
+              onClick={() => {
+                close();
+                router.push("/checkout");
+              }}
               className="w-full bg-foreground text-background py-3 rounded text-sm font-medium hover:bg-accent transition"
             >
-              Checkout
+              Checkout →
             </button>
           </div>
         )}

@@ -3,9 +3,11 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { useCart } from "@/lib/cart";
+import { totalUnread } from "@/lib/messages";
 
 export default function Header() {
   const { count, open } = useCart();
+  const unread = totalUnread();
   return (
     <header className="sticky top-0 z-30 bg-background/85 backdrop-blur border-b border-line">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between gap-6">
@@ -19,8 +21,14 @@ export default function Header() {
           <Link href="/" className="hover:text-foreground transition">
             Browse
           </Link>
-          <Link href="/" className="hover:text-foreground transition">
-            Vendors
+          <Link href="/bundles" className="hover:text-foreground transition">
+            Bundles
+          </Link>
+          <Link
+            href="/plug-me-in"
+            className="hover:text-foreground transition"
+          >
+            Plug me in
           </Link>
           <Link
             href="/become-a-vendor"
@@ -29,10 +37,18 @@ export default function Header() {
             Become a vendor
           </Link>
         </nav>
-        <div className="flex items-center gap-3">
-          <button className="hidden sm:inline-block text-sm text-muted hover:text-foreground transition">
-            Sign in
-          </button>
+        <div className="flex items-center gap-2">
+          <Link
+            href="/messages"
+            className="relative text-sm border border-line px-3 py-1.5 rounded-full hover:border-foreground transition"
+          >
+            DMs
+            {unread > 0 && (
+              <span className="absolute -top-1 -right-1 bg-foreground text-background text-[10px] rounded-full w-4 h-4 flex items-center justify-center font-medium">
+                {unread}
+              </span>
+            )}
+          </Link>
           <motion.button
             whileTap={{ scale: 0.95 }}
             whileHover={{ scale: 1.03 }}

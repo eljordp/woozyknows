@@ -9,7 +9,29 @@ export type Vendor = {
   bio: string;
   accent: string;
   founder?: boolean;
+  verified?: boolean;
+  responseRate?: number;
+  responseTime?: string;
+  storiesCount?: number;
+  acceptsCrypto?: boolean;
+  acceptsCashApp?: boolean;
+  acceptsZelle?: boolean;
+  contact?: {
+    phone?: string;
+    instagram?: string;
+    cashapp?: string;
+  };
 };
+
+export type ProductType =
+  | "package"
+  | "call"
+  | "appointment"
+  | "subscription"
+  | "inquiry"
+  | "drop"
+  | "bid"
+  | "internship";
 
 export type Product = {
   slug: string;
@@ -18,12 +40,17 @@ export type Product = {
   category: string;
   price: number;
   priceType: "fixed" | "from" | "inquiry";
+  productType: ProductType;
   blurb: string;
   bullets: string[];
   delivery: string;
   imageBg: string;
   imageEmoji: string;
   tags: string[];
+  durationMin?: number;
+  billingCycle?: "weekly" | "monthly";
+  stockTotal?: number;
+  stockLeft?: number;
 };
 
 export const categories = [
@@ -41,8 +68,25 @@ export const categories = [
   "Custom",
 ];
 
+const v = (
+  partial: Vendor & {
+    verified?: boolean;
+    responseRate?: number;
+    responseTime?: string;
+  }
+): Vendor => ({
+  verified: true,
+  responseRate: 95,
+  responseTime: "~2h",
+  storiesCount: 3,
+  acceptsCrypto: true,
+  acceptsCashApp: true,
+  acceptsZelle: true,
+  ...partial,
+});
+
 export const vendors: Vendor[] = [
-  {
+  v({
     slug: "wzyotb",
     name: "wzyotb",
     tagline: "Founder · sells the keys",
@@ -53,8 +97,16 @@ export const vendors: Vendor[] = [
     bio: "Founder of WoozyKnows. I built this. I also build sites, do strategy calls, and plug people into my network. If you want in, talk to me first.",
     accent: "#0a0a0a",
     founder: true,
-  },
-  {
+    storiesCount: 5,
+    responseTime: "~30m",
+    responseRate: 100,
+    contact: {
+      phone: "+1 707 555 0142",
+      instagram: "@wzyotb",
+      cashapp: "$wzyotb",
+    },
+  }),
+  v({
     slug: "big-bro-wholesale",
     name: "Big Bro Wholesale",
     tagline: "Bulk to flip",
@@ -64,8 +116,11 @@ export const vendors: Vendor[] = [
     joined: "2023",
     bio: "We move bulk. Cables, electronics, household. You flip how you flip.",
     accent: "#1f1f1f",
-  },
-  {
+    responseTime: "~4h",
+    responseRate: 92,
+    contact: { phone: "+1 213 555 0190", instagram: "@bigbrowholesale" },
+  }),
+  v({
     slug: "rico-rentals",
     name: "Rico Rentals",
     tagline: "Whips by the day",
@@ -75,8 +130,10 @@ export const vendors: Vendor[] = [
     joined: "2024",
     bio: "Daily, weekend, weekly. Sedans, SUVs, Chargers. Insured.",
     accent: "#c4361b",
-  },
-  {
+    responseTime: "~1h",
+    contact: { phone: "+1 713 555 0177", cashapp: "$ricorentals" },
+  }),
+  v({
     slug: "web-plug",
     name: "Web Plug",
     tagline: "Sites that move",
@@ -86,8 +143,11 @@ export const vendors: Vendor[] = [
     joined: "2024",
     bio: "Landing pages. Full sites. Stores. No templates, no slow.",
     accent: "#2b4a8a",
-  },
-  {
+    responseTime: "~30m",
+    responseRate: 99,
+    contact: { instagram: "@webplug", phone: "+1 415 555 0123" },
+  }),
+  v({
     slug: "trap-detail",
     name: "Trap Detail",
     tagline: "Mobile detail",
@@ -97,8 +157,10 @@ export const vendors: Vendor[] = [
     joined: "2022",
     bio: "We pull up. Interior, exterior, ceramic. Fleets too.",
     accent: "#0e3b2e",
-  },
-  {
+    responseTime: "~2h",
+    contact: { phone: "+1 404 555 0166", cashapp: "$trapdetail" },
+  }),
+  v({
     slug: "cuts-by-quan",
     name: "Cuts by Quan",
     tagline: "House call barber",
@@ -108,8 +170,11 @@ export const vendors: Vendor[] = [
     joined: "2023",
     bio: "House calls. Weddings. Weekly tap-ins. Tue–Sat.",
     accent: "#7a1c1c",
-  },
-  {
+    responseTime: "~1h",
+    storiesCount: 7,
+    contact: { phone: "+1 305 555 0188", instagram: "@cutsbyquan" },
+  }),
+  v({
     slug: "first-class-meals",
     name: "First Class Meals",
     tagline: "Plates done right",
@@ -119,8 +184,14 @@ export const vendors: Vendor[] = [
     joined: "2024",
     bio: "Weekly meal prep. Sunday platters. Private chef nights when you call.",
     accent: "#9c4a14",
-  },
-  {
+    responseTime: "~3h",
+    contact: {
+      phone: "+1 707 555 0144",
+      instagram: "@firstclassmeals",
+      cashapp: "$firstclassmeals",
+    },
+  }),
+  v({
     slug: "sneaker-plug",
     name: "Sneaker Plug",
     tagline: "Heat sourcing",
@@ -130,8 +201,11 @@ export const vendors: Vendor[] = [
     joined: "2022",
     bio: "We find the pair. 1:1 search. Mystery boxes. Resell drops.",
     accent: "#000000",
-  },
-  {
+    responseTime: "~6h",
+    storiesCount: 12,
+    contact: { instagram: "@sneakerplug.nyc" },
+  }),
+  v({
     slug: "notary-now",
     name: "Notary Now",
     tagline: "Mobile notary, 24/7",
@@ -141,8 +215,12 @@ export const vendors: Vendor[] = [
     joined: "2023",
     bio: "Mobile signings, late nights, loan packets. Anywhere in the Bay.",
     accent: "#3b3b6e",
-  },
-  {
+    responseTime: "~15m",
+    responseRate: 100,
+    acceptsCrypto: false,
+    contact: { phone: "+1 510 555 0122" },
+  }),
+  v({
     slug: "quick-filings",
     name: "Quick Filings",
     tagline: "LLC, EIN, taxes",
@@ -152,8 +230,12 @@ export const vendors: Vendor[] = [
     joined: "2024",
     bio: "Get your business legit. LLC, EIN, taxes — done in a week.",
     accent: "#1a4d3a",
-  },
-  {
+    responseTime: "~12h",
+    acceptsCrypto: false,
+    acceptsCashApp: false,
+    contact: { phone: "+1 800 555 0133", instagram: "@quickfilings" },
+  }),
+  v({
     slug: "side-b-music",
     name: "Side B Music",
     tagline: "Beats, mix, master",
@@ -163,8 +245,11 @@ export const vendors: Vendor[] = [
     joined: "2023",
     bio: "Beats. Mix. Master. Indie + label. We cook.",
     accent: "#b8336a",
-  },
-  {
+    responseTime: "~2h",
+    storiesCount: 8,
+    contact: { instagram: "@sidebmusic", cashapp: "$sidebmusic" },
+  }),
+  v({
     slug: "studio-24",
     name: "Studio 24",
     tagline: "Music videos + content",
@@ -174,8 +259,11 @@ export const vendors: Vendor[] = [
     joined: "2024",
     bio: "Music videos. Performance shoots. IG cuts. Same-week edits.",
     accent: "#3a2e6e",
-  },
-  {
+    responseTime: "~3h",
+    storiesCount: 9,
+    contact: { instagram: "@studio24mem", phone: "+1 901 555 0155" },
+  }),
+  v({
     slug: "junk-out",
     name: "Junk Out",
     tagline: "Hauling + cleanouts",
@@ -185,8 +273,10 @@ export const vendors: Vendor[] = [
     joined: "2023",
     bio: "Truck. Crew. We clear it out. Same day.",
     accent: "#b08338",
-  },
-  {
+    responseTime: "~45m",
+    contact: { phone: "+1 916 555 0111", cashapp: "$junkout" },
+  }),
+  v({
     slug: "core-method",
     name: "Core Method",
     tagline: "Strength coaching",
@@ -196,8 +286,11 @@ export const vendors: Vendor[] = [
     joined: "2024",
     bio: "Programming + 1:1. Wynwood gym. Remote works too.",
     accent: "#d04a3a",
-  },
-  {
+    responseTime: "~1h",
+    storiesCount: 6,
+    contact: { instagram: "@coremethod", phone: "+1 305 555 0199" },
+  }),
+  v({
     slug: "ground-floor-advisory",
     name: "Ground Floor",
     tagline: "Founder coaching",
@@ -207,7 +300,9 @@ export const vendors: Vendor[] = [
     joined: "2024",
     bio: "Founder calls. Pricing. GTM. Fundraising prep. Pre-seed to seed.",
     accent: "#0f5c4a",
-  },
+    responseTime: "~4h",
+    contact: { instagram: "@groundflooradvisory" },
+  }),
 ];
 
 export const products: Product[] = [
@@ -219,6 +314,8 @@ export const products: Product[] = [
     category: "Consulting",
     price: 300,
     priceType: "fixed",
+    productType: "call",
+    durationMin: 60,
     blurb: "One hour. You bring the problem. I bring the play.",
     bullets: ["60 min", "Pre-call brief", "Followup on Slack"],
     delivery: "Within 1 week",
@@ -233,6 +330,7 @@ export const products: Product[] = [
     category: "Web & Tech",
     price: 2500,
     priceType: "from",
+    productType: "package",
     blurb: "Site like this one. Built for what you actually do, not a template.",
     bullets: ["Design + dev", "Ships in 2 weeks", "Vercel + analytics"],
     delivery: "2 weeks",
@@ -247,6 +345,7 @@ export const products: Product[] = [
     category: "Consulting",
     price: 0,
     priceType: "inquiry",
+    productType: "inquiry",
     blurb: "Tell me what you need. I make the intro. Network access, no markup.",
     bullets: ["Curated intros", "From my network", "Quote on the ask"],
     delivery: "Custom",
@@ -261,6 +360,7 @@ export const products: Product[] = [
     category: "Consulting",
     price: 0,
     priceType: "inquiry",
+    productType: "inquiry",
     blurb: "I work with you for a quarter. Weekly calls, Slack on lock, real moves.",
     bullets: ["Weekly calls", "Slack always on", "Quote on scope"],
     delivery: "Custom",
@@ -268,8 +368,23 @@ export const products: Product[] = [
     imageEmoji: "◆",
     tags: ["mentor", "founder"],
   },
+  {
+    slug: "wzyotb-internship",
+    vendorSlug: "wzyotb",
+    title: "WoozyKnows internship",
+    category: "Consulting",
+    price: 0,
+    priceType: "inquiry",
+    productType: "internship",
+    blurb: "Work alongside me. Build, sell, ship. 12 weeks. Stipend or equity.",
+    bullets: ["12 weeks", "Stipend or equity", "Real ownership of work"],
+    delivery: "Q2 + Q4 cohorts",
+    imageBg: "#1a1a1a",
+    imageEmoji: "★",
+    tags: ["internship", "apprentice"],
+  },
 
-  // Big Bro Wholesale — Flips
+  // Big Bro Wholesale
   {
     slug: "case-100-charger-cables",
     vendorSlug: "big-bro-wholesale",
@@ -277,6 +392,7 @@ export const products: Product[] = [
     category: "Flips",
     price: 180,
     priceType: "fixed",
+    productType: "package",
     blurb: "Hundred cables. Lightning + USB-C. Move how you move.",
     bullets: ["100 units", "Lightning + USB-C", "LA pickup or shipped"],
     delivery: "3 days",
@@ -291,6 +407,9 @@ export const products: Product[] = [
     category: "Flips",
     price: 850,
     priceType: "from",
+    productType: "drop",
+    stockTotal: 10,
+    stockLeft: 3,
     blurb: "Returns + overstock. Phones, tablets, accessories. Manifest if you ask.",
     bullets: ["Manifest on request", "$2–4K MSRP", "LA pickup"],
     delivery: "1 week",
@@ -305,6 +424,7 @@ export const products: Product[] = [
     category: "Flips",
     price: 0,
     priceType: "inquiry",
+    productType: "inquiry",
     blurb: "Tell us what you flip. We source it. Quote in 24h.",
     bullets: ["Sourced for your niche", "Volume pricing", "24h quote"],
     delivery: "Custom",
@@ -313,7 +433,7 @@ export const products: Product[] = [
     tags: ["custom", "sourcing"],
   },
 
-  // Rico Rentals — Whips
+  // Rico Rentals
   {
     slug: "daily-rental-charger",
     vendorSlug: "rico-rentals",
@@ -321,6 +441,8 @@ export const products: Product[] = [
     category: "Whips",
     price: 95,
     priceType: "fixed",
+    productType: "appointment",
+    durationMin: 1440,
     blurb: "Charger. Tank's full. 200 miles is yours. Insured.",
     bullets: ["24 hours", "200 mi", "Insurance included"],
     delivery: "Same day",
@@ -335,6 +457,7 @@ export const products: Product[] = [
     category: "Whips",
     price: 480,
     priceType: "fixed",
+    productType: "appointment",
     blurb: "Tahoe or Suburban. Friday to Sunday. Unlimited miles.",
     bullets: ["3 days", "Unlimited miles", "Family-trip ready"],
     delivery: "Friday",
@@ -349,6 +472,7 @@ export const products: Product[] = [
     category: "Whips",
     price: 0,
     priceType: "inquiry",
+    productType: "inquiry",
     blurb: "Out of town a week+? Send dates, we quote.",
     bullets: ["Weekly + monthly", "Custom mileage", "Out-of-state OK"],
     delivery: "Custom",
@@ -357,7 +481,7 @@ export const products: Product[] = [
     tags: ["custom", "long-trip"],
   },
 
-  // Web Plug — Web & Tech
+  // Web Plug
   {
     slug: "landing-page-plug",
     vendorSlug: "web-plug",
@@ -365,6 +489,7 @@ export const products: Product[] = [
     category: "Web & Tech",
     price: 500,
     priceType: "fixed",
+    productType: "package",
     blurb: "One page. Live in 5 days. Converts or we redo it.",
     bullets: ["Design + dev", "Mobile + desktop", "Vercel deploy"],
     delivery: "5 days",
@@ -379,6 +504,7 @@ export const products: Product[] = [
     category: "Web & Tech",
     price: 1500,
     priceType: "fixed",
+    productType: "package",
     blurb: "Home, services, about, gallery, contact. Two weeks, you're up.",
     bullets: ["5 pages", "CMS optional", "Ships in 2 weeks"],
     delivery: "2 weeks",
@@ -393,6 +519,7 @@ export const products: Product[] = [
     category: "Web & Tech",
     price: 2500,
     priceType: "from",
+    productType: "package",
     blurb: "Stripe, inventory, the whole bag. Quote scales with your catalog.",
     bullets: ["Stripe checkout", "Up to 50 SKUs", "Admin panel"],
     delivery: "3 weeks",
@@ -401,7 +528,7 @@ export const products: Product[] = [
     tags: ["ecommerce", "stripe"],
   },
 
-  // Trap Detail — Service
+  // Trap Detail
   {
     slug: "detail-sedan",
     vendorSlug: "trap-detail",
@@ -409,6 +536,8 @@ export const products: Product[] = [
     category: "Service",
     price: 80,
     priceType: "fixed",
+    productType: "appointment",
+    durationMin: 90,
     blurb: "We pull up. Wash, vac, wipe down, tires shining.",
     bullets: ["Interior + exterior", "Mobile", "~90 min"],
     delivery: "Same week",
@@ -423,6 +552,8 @@ export const products: Product[] = [
     category: "Service",
     price: 140,
     priceType: "fixed",
+    productType: "appointment",
+    durationMin: 120,
     blurb: "Bigger ride, deeper clean. Steam everything.",
     bullets: ["Steam clean", "~2 hours", "Mobile"],
     delivery: "Same week",
@@ -437,6 +568,7 @@ export const products: Product[] = [
     category: "Service",
     price: 0,
     priceType: "inquiry",
+    productType: "inquiry",
     blurb: "2-year ceramic, paint correction, the works. Quote on the ride.",
     bullets: ["Paint correction", "2-yr ceramic", "Quote per car"],
     delivery: "Custom",
@@ -445,7 +577,7 @@ export const products: Product[] = [
     tags: ["ceramic", "premium"],
   },
 
-  // Cuts by Quan — Style
+  // Cuts by Quan
   {
     slug: "house-call-cut",
     vendorSlug: "cuts-by-quan",
@@ -453,6 +585,8 @@ export const products: Product[] = [
     category: "Style",
     price: 60,
     priceType: "fixed",
+    productType: "appointment",
+    durationMin: 30,
     blurb: "We pull up. Cut + lineup. Tip optional but appreciated.",
     bullets: ["Cut + lineup", "At your spot", "~30 min"],
     delivery: "Within 48h",
@@ -467,6 +601,8 @@ export const products: Product[] = [
     category: "Style",
     price: 80,
     priceType: "fixed",
+    productType: "appointment",
+    durationMin: 45,
     blurb: "Full reset. Cut, lineup, beard, hot towel.",
     bullets: ["Cut + lineup", "Beard shape", "Hot towel"],
     delivery: "Within 48h",
@@ -481,6 +617,7 @@ export const products: Product[] = [
     category: "Style",
     price: 200,
     priceType: "from",
+    productType: "appointment",
     blurb: "Groom + groomsmen on-site. Group rate, locked in.",
     bullets: ["Up to 6 heads", "On-site", "Group rate"],
     delivery: "Per booking",
@@ -489,7 +626,7 @@ export const products: Product[] = [
     tags: ["wedding", "event"],
   },
 
-  // First Class Meals — Food
+  // First Class Meals
   {
     slug: "meal-prep-week",
     vendorSlug: "first-class-meals",
@@ -497,6 +634,8 @@ export const products: Product[] = [
     category: "Food",
     price: 120,
     priceType: "fixed",
+    productType: "subscription",
+    billingCycle: "weekly",
     blurb: "10 plates. Macros on point. Sunday delivery, all week ready.",
     bullets: ["10 meals", "Sunday delivery", "Macros on the lid"],
     delivery: "Sundays",
@@ -511,6 +650,7 @@ export const products: Product[] = [
     category: "Food",
     price: 85,
     priceType: "fixed",
+    productType: "package",
     blurb: "Family-style. Feeds 4–6. Sunday only.",
     bullets: ["Feeds 4–6", "Sunday only", "Pickup or local delivery"],
     delivery: "Sundays",
@@ -525,6 +665,7 @@ export const products: Product[] = [
     category: "Food",
     price: 0,
     priceType: "inquiry",
+    productType: "inquiry",
     blurb: "We come cook at your spot. Birthdays, dates, family.",
     bullets: ["Cooked on-site", "Custom menu", "Quote on guest count"],
     delivery: "Custom",
@@ -533,7 +674,7 @@ export const products: Product[] = [
     tags: ["private-chef", "custom"],
   },
 
-  // Sneaker Plug — Style
+  // Sneaker Plug
   {
     slug: "mystery-sneaker-box",
     vendorSlug: "sneaker-plug",
@@ -541,6 +682,9 @@ export const products: Product[] = [
     category: "Style",
     price: 150,
     priceType: "fixed",
+    productType: "drop",
+    stockTotal: 50,
+    stockLeft: 12,
     blurb: "One pair. You don't know what. Authenticated, $200–500 resale.",
     bullets: ["1 mystery pair", "Authenticated", "Resale guide"],
     delivery: "1 week",
@@ -555,6 +699,7 @@ export const products: Product[] = [
     category: "Style",
     price: 0,
     priceType: "inquiry",
+    productType: "inquiry",
     blurb: "Pair + size. We hunt. Quote w/ markup.",
     bullets: ["Any model + size", "Markup quoted", "Authenticated"],
     delivery: "Custom",
@@ -569,6 +714,9 @@ export const products: Product[] = [
     category: "Style",
     price: 400,
     priceType: "from",
+    productType: "drop",
+    stockTotal: 25,
+    stockLeft: 8,
     blurb: "10 mixed pieces — tees, hoodies, accessories. Resell-ready.",
     bullets: ["10 items", "Resell-ready", "Mixed sizes"],
     delivery: "1 week",
@@ -577,7 +725,7 @@ export const products: Product[] = [
     tags: ["clothing", "bulk"],
   },
 
-  // Notary Now — Service
+  // Notary Now
   {
     slug: "single-notarization",
     vendorSlug: "notary-now",
@@ -585,6 +733,8 @@ export const products: Product[] = [
     category: "Service",
     price: 35,
     priceType: "fixed",
+    productType: "appointment",
+    durationMin: 20,
     blurb: "One doc, anywhere in the Bay, day or night.",
     bullets: ["1 document", "Mobile", "24/7"],
     delivery: "Same day",
@@ -599,6 +749,8 @@ export const products: Product[] = [
     category: "Service",
     price: 150,
     priceType: "fixed",
+    productType: "appointment",
+    durationMin: 60,
     blurb: "Full loan packet, signed mobile, shipped same day.",
     bullets: ["Full packet", "Mobile", "Shipped same day"],
     delivery: "Same day",
@@ -607,7 +759,7 @@ export const products: Product[] = [
     tags: ["loan", "signing"],
   },
 
-  // Quick Filings — Setup
+  // Quick Filings
   {
     slug: "llc-formation-ein",
     vendorSlug: "quick-filings",
@@ -615,6 +767,7 @@ export const products: Product[] = [
     category: "Setup",
     price: 250,
     priceType: "fixed",
+    productType: "package",
     blurb: "LLC filed. EIN issued. Operating agreement in your inbox. State fees on you.",
     bullets: ["LLC filing", "EIN", "Operating agreement"],
     delivery: "1 week",
@@ -629,6 +782,7 @@ export const products: Product[] = [
     category: "Setup",
     price: 150,
     priceType: "fixed",
+    productType: "package",
     blurb: "Federal + one state. W-2 + basic 1099. E-filed, done.",
     bullets: ["Federal + state", "W-2 + 1099", "E-filed"],
     delivery: "3 days",
@@ -643,6 +797,7 @@ export const products: Product[] = [
     category: "Setup",
     price: 750,
     priceType: "from",
+    productType: "package",
     blurb: "LLC, EIN, business bank, books, first year filing. You're legit.",
     bullets: ["LLC + EIN", "Bank guidance", "Books starter kit"],
     delivery: "2 weeks",
@@ -651,7 +806,7 @@ export const products: Product[] = [
     tags: ["setup", "package"],
   },
 
-  // Side B Music — Music
+  // Side B Music
   {
     slug: "custom-beat",
     vendorSlug: "side-b-music",
@@ -659,6 +814,7 @@ export const products: Product[] = [
     category: "Music",
     price: 450,
     priceType: "fixed",
+    productType: "package",
     blurb: "Original. Your direction. Exclusive license, stems on the way out.",
     bullets: ["Exclusive", "Stems delivered", "2 revisions"],
     delivery: "10 days",
@@ -673,6 +829,7 @@ export const products: Product[] = [
     category: "Music",
     price: 350,
     priceType: "fixed",
+    productType: "package",
     blurb: "Up to 24 stems. Mix, master, WAV + MP3 back to you.",
     bullets: ["Up to 24 stems", "1 revision", "WAV + MP3"],
     delivery: "5 days",
@@ -687,6 +844,7 @@ export const products: Product[] = [
     category: "Music",
     price: 0,
     priceType: "inquiry",
+    productType: "inquiry",
     blurb: "Music for ads, films, brand spots. Sync rights cleared. Quote on use.",
     bullets: ["Custom comp", "Sync rights", "Quote on use"],
     delivery: "Custom",
@@ -695,7 +853,7 @@ export const products: Product[] = [
     tags: ["sync", "ads"],
   },
 
-  // Studio 24 — Music
+  // Studio 24
   {
     slug: "music-video-single",
     vendorSlug: "studio-24",
@@ -703,6 +861,7 @@ export const products: Product[] = [
     category: "Music",
     price: 400,
     priceType: "fixed",
+    productType: "package",
     blurb: "One song. One spot. One outfit. Edit in your inbox in 7.",
     bullets: ["1 location", "1 outfit", "Edit in 7 days"],
     delivery: "1 week",
@@ -717,6 +876,8 @@ export const products: Product[] = [
     category: "Music",
     price: 250,
     priceType: "fixed",
+    productType: "appointment",
+    durationMin: 240,
     blurb: "Live performance, multi-cam, in-studio. IG cuts come with it.",
     bullets: ["4 hours", "Multi-cam", "IG cuts included"],
     delivery: "5 days",
@@ -731,6 +892,7 @@ export const products: Product[] = [
     category: "Music",
     price: 0,
     priceType: "inquiry",
+    productType: "inquiry",
     blurb: "We travel with you. Every show, every city. Daily IG drops.",
     bullets: ["Travels with you", "Daily IG cuts", "Quote on length"],
     delivery: "Custom",
@@ -738,8 +900,23 @@ export const products: Product[] = [
     imageEmoji: "✦",
     tags: ["tour", "custom"],
   },
+  {
+    slug: "studio-24-shooter-internship",
+    vendorSlug: "studio-24",
+    title: "Shooter / editor internship",
+    category: "Music",
+    price: 0,
+    priceType: "inquiry",
+    productType: "internship",
+    blurb: "Run with us. Shoot, edit, post. 6 weeks. Real shoots, real credit.",
+    bullets: ["6 weeks", "Real shoot credit", "Camera + edit days"],
+    delivery: "Rolling cohorts",
+    imageBg: "#3a2e6e",
+    imageEmoji: "★",
+    tags: ["internship", "video"],
+  },
 
-  // Junk Out — Service
+  // Junk Out
   {
     slug: "single-item-haul",
     vendorSlug: "junk-out",
@@ -747,6 +924,8 @@ export const products: Product[] = [
     category: "Service",
     price: 80,
     priceType: "fixed",
+    productType: "appointment",
+    durationMin: 60,
     blurb: "Old couch, broken fridge, that thing in the garage — gone.",
     bullets: ["1 item", "Same day", "Truck + crew"],
     delivery: "Same day",
@@ -761,6 +940,7 @@ export const products: Product[] = [
     category: "Service",
     price: 350,
     priceType: "from",
+    productType: "package",
     blurb: "Whole unit cleared. Studio to 2BR. Donate-able stuff goes to a home.",
     bullets: ["Full unit", "Same day", "Donations included"],
     delivery: "Same week",
@@ -775,6 +955,7 @@ export const products: Product[] = [
     category: "Service",
     price: 0,
     priceType: "inquiry",
+    productType: "inquiry",
     blurb: "Full house. Sensitive situations. We move quiet.",
     bullets: ["Full house", "Discreet crew", "Quote on volume"],
     delivery: "Custom",
@@ -783,7 +964,7 @@ export const products: Product[] = [
     tags: ["estate", "custom"],
   },
 
-  // Core Method — Fitness
+  // Core Method
   {
     slug: "in-person-session",
     vendorSlug: "core-method",
@@ -791,6 +972,8 @@ export const products: Product[] = [
     category: "Fitness",
     price: 140,
     priceType: "fixed",
+    productType: "appointment",
+    durationMin: 60,
     blurb: "1:1 in the Wynwood gym. Hour. You leave smoked.",
     bullets: ["60 min", "1:1", "Wynwood"],
     delivery: "Book within 7 days",
@@ -805,6 +988,8 @@ export const products: Product[] = [
     category: "Fitness",
     price: 250,
     priceType: "fixed",
+    productType: "subscription",
+    billingCycle: "monthly",
     blurb: "Custom program. Updated weekly. Slack check-ins, no excuses.",
     bullets: ["Updated weekly", "App-based", "Slack access"],
     delivery: "Monthly",
@@ -819,6 +1004,7 @@ export const products: Product[] = [
     category: "Fitness",
     price: 60,
     priceType: "fixed",
+    productType: "package",
     blurb: "Send a clip. Get a video breakdown back in 48.",
     bullets: ["Async", "Video breakdown", "48h turnaround"],
     delivery: "48 hours",
@@ -827,7 +1013,7 @@ export const products: Product[] = [
     tags: ["form", "async"],
   },
 
-  // Ground Floor — Consulting
+  // Ground Floor
   {
     slug: "founder-coaching-session",
     vendorSlug: "ground-floor-advisory",
@@ -835,6 +1021,8 @@ export const products: Product[] = [
     category: "Consulting",
     price: 500,
     priceType: "fixed",
+    productType: "call",
+    durationMin: 90,
     blurb: "One deep call. Pricing, GTM, or fundraising. Written followup after.",
     bullets: ["90 min", "Pre-call prep", "Written followup"],
     delivery: "Within 1 week",
@@ -849,6 +1037,7 @@ export const products: Product[] = [
     category: "Consulting",
     price: 4500,
     priceType: "from",
+    productType: "package",
     blurb: "Deck, narrative, target list, four prep sessions. You walk in ready.",
     bullets: ["Deck review", "Pitch coaching", "Investor list"],
     delivery: "3 weeks",
@@ -863,6 +1052,7 @@ export const products: Product[] = [
     category: "Consulting",
     price: 0,
     priceType: "inquiry",
+    productType: "inquiry",
     blurb: "Embedded advisor for one quarter. Equity or cash. Weekly calls, Slack always on.",
     bullets: ["Weekly calls", "Slack access", "Quote on scope"],
     delivery: "Custom",
@@ -887,5 +1077,30 @@ export function productsByVendor(vendorSlug: string): Product[] {
 export function formatPrice(p: Product): string {
   if (p.priceType === "inquiry") return "Inquire";
   const formatted = `$${p.price.toLocaleString()}`;
-  return p.priceType === "from" ? `From ${formatted}` : formatted;
+  if (p.priceType === "from") return `From ${formatted}`;
+  if (p.productType === "subscription") {
+    return `${formatted}/${p.billingCycle === "weekly" ? "wk" : "mo"}`;
+  }
+  return formatted;
+}
+
+export function productCTA(p: Product): string {
+  switch (p.productType) {
+    case "call":
+      return "Book call";
+    case "appointment":
+      return "Book";
+    case "subscription":
+      return "Subscribe";
+    case "inquiry":
+      return "Inquire";
+    case "drop":
+      return p.stockLeft && p.stockLeft > 0 ? "Cop" : "Sold out";
+    case "bid":
+      return "Make offer";
+    case "internship":
+      return "Apply";
+    default:
+      return "Add";
+  }
 }
