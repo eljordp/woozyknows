@@ -2,9 +2,11 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
+import { motion } from "framer-motion";
 import { products, vendors, categories } from "@/lib/data";
 import ProductCard from "@/components/ProductCard";
 import CategoryRail from "@/components/CategoryRail";
+import Ticker from "@/components/Ticker";
 
 export default function Home() {
   const [category, setCategory] = useState("All");
@@ -23,38 +25,77 @@ export default function Home() {
           p.tags.some((t) => t.includes(q))
       );
     }
-    if (sort === "low")
-      list = [...list].sort((a, b) => a.price - b.price);
-    if (sort === "high")
-      list = [...list].sort((a, b) => b.price - a.price);
+    if (sort === "low") list = [...list].sort((a, b) => a.price - b.price);
+    if (sort === "high") list = [...list].sort((a, b) => b.price - a.price);
     return list;
   }, [category, query, sort]);
 
   return (
     <>
-      <section className="border-b border-line">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-16 grid md:grid-cols-[1fr_auto] gap-8 items-end">
+      <Ticker />
+
+      <section className="border-b border-line overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-20 grid md:grid-cols-[1fr_auto] gap-8 items-end">
           <div>
-            <h1 className="font-display text-4xl sm:text-5xl md:text-6xl leading-[1.05] max-w-3xl">
+            <motion.div
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4 }}
+              className="text-xs uppercase tracking-[0.2em] text-muted mb-4"
+            >
+              The marketplace · 14 vendors · live
+            </motion.div>
+            <motion.h1
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
+              className="font-display text-4xl sm:text-5xl md:text-7xl leading-[1] max-w-3xl"
+            >
               Woozy knows{" "}
-              <span className="italic">a guy for everything.</span>
-            </h1>
-            <p className="mt-4 text-muted max-w-xl">
-              A marketplace of vetted vendors. Browse fixed-price packages or
-              send a custom inquiry. We&apos;ll plug you in.
-            </p>
+              <motion.span
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.5, duration: 0.6 }}
+                className="italic"
+              >
+                a guy for everything.
+              </motion.span>
+            </motion.h1>
+            <motion.p
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.7, duration: 0.5 }}
+              className="mt-5 text-muted max-w-xl text-lg"
+            >
+              Flips. Whips. Plates. Cuts. Beats. Books. Whatever you need —
+              somebody on here got you.
+            </motion.p>
           </div>
-          <div className="flex flex-col items-start md:items-end gap-2">
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.4, duration: 0.5 }}
+            className="flex flex-col items-start md:items-end gap-3"
+          >
             <div className="text-sm text-muted">
               {vendors.length} vendors · {products.length} services
             </div>
             <Link
               href="#browse"
-              className="inline-block bg-foreground text-background px-5 py-2.5 rounded-full text-sm hover:bg-accent transition"
+              className="inline-block bg-foreground text-background px-6 py-3 rounded-full text-sm hover:bg-accent transition group"
             >
-              Browse the catalog →
+              Browse the catalog{" "}
+              <span className="inline-block group-hover:translate-x-1 transition-transform">
+                →
+              </span>
             </Link>
-          </div>
+            <Link
+              href="/become-a-vendor"
+              className="text-sm text-muted hover:text-foreground transition underline underline-offset-4"
+            >
+              Become a vendor →
+            </Link>
+          </motion.div>
         </div>
       </section>
 
@@ -69,7 +110,7 @@ export default function Home() {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search services, vendors, tags…"
-          className="w-full sm:max-w-md px-4 py-2 rounded-full border border-line bg-card text-sm focus:outline-none focus:border-foreground"
+          className="w-full sm:max-w-md px-4 py-2 rounded-full border border-line bg-card text-sm focus:outline-none focus:border-foreground transition"
         />
         <div className="flex items-center gap-3 text-sm">
           <span className="text-muted">Sort</span>
@@ -78,7 +119,7 @@ export default function Home() {
             onChange={(e) =>
               setSort(e.target.value as "featured" | "low" | "high")
             }
-            className="border border-line rounded-full px-3 py-1.5 bg-card focus:outline-none focus:border-foreground"
+            className="border border-line rounded-full px-3 py-1.5 bg-card focus:outline-none focus:border-foreground transition"
           >
             <option value="featured">Featured</option>
             <option value="low">Price ↑</option>
@@ -94,8 +135,8 @@ export default function Home() {
           </div>
         ) : (
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-x-4 gap-y-8">
-            {filtered.map((p) => (
-              <ProductCard key={p.slug} p={p} />
+            {filtered.map((p, i) => (
+              <ProductCard key={p.slug} p={p} index={i} />
             ))}
           </div>
         )}
@@ -105,29 +146,87 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
           <div className="flex items-end justify-between mb-6">
             <h2 className="font-display text-2xl">Featured vendors</h2>
-            <Link href="#" className="text-sm text-muted hover:text-foreground">
+            <Link
+              href="#"
+              className="text-sm text-muted hover:text-foreground transition"
+            >
               View all →
             </Link>
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
-            {vendors.slice(0, 5).map((v) => (
-              <Link
+            {vendors.slice(0, 5).map((v, i) => (
+              <motion.div
                 key={v.slug}
-                href={`/vendor/${v.slug}`}
-                className="group flex flex-col items-start p-4 border border-line rounded-md hover:border-foreground transition bg-card"
+                initial={{ opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.05, duration: 0.4 }}
+                whileHover={{ y: -3 }}
               >
-                <div
-                  className="w-10 h-10 rounded-full mb-3"
-                  style={{ backgroundColor: v.accent }}
-                />
-                <div className="text-sm font-medium group-hover:underline underline-offset-2">
-                  {v.name}
+                <Link
+                  href={`/vendor/${v.slug}`}
+                  className="group flex flex-col items-start p-4 border border-line rounded-md hover:border-foreground transition bg-card h-full"
+                >
+                  <div
+                    className="w-10 h-10 rounded-full mb-3 group-hover:scale-110 transition-transform"
+                    style={{ backgroundColor: v.accent }}
+                  />
+                  <div className="text-sm font-medium group-hover:underline underline-offset-2">
+                    {v.name}
+                  </div>
+                  <div className="text-xs text-muted mt-0.5">{v.tagline}</div>
+                  <div className="text-xs text-muted mt-2">
+                    ★ {v.rating} · {v.reviewCount}
+                  </div>
+                </Link>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="border-t border-line">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-24 grid md:grid-cols-2 gap-10 items-center">
+          <div>
+            <div className="text-xs uppercase tracking-[0.2em] text-muted mb-4">
+              For vendors
+            </div>
+            <h2 className="font-display text-3xl sm:text-5xl leading-tight">
+              You got product.{" "}
+              <span className="italic">We got the eyeballs.</span>
+            </h2>
+            <p className="mt-4 text-muted max-w-md">
+              List your hustle on the right shelf. Get pushed to the right
+              buyers. Pay for the visibility you want.
+            </p>
+            <Link
+              href="/become-a-vendor"
+              className="mt-6 inline-block bg-foreground text-background px-6 py-3 rounded-full text-sm hover:bg-accent transition"
+            >
+              See vendor packages →
+            </Link>
+          </div>
+          <div className="grid grid-cols-2 gap-3">
+            {[
+              { k: "Listed", v: "$0" },
+              { k: "Boost", v: "$49/mo" },
+              { k: "Featured", v: "$199/mo" },
+              { k: "Partner", v: "Inquire" },
+            ].map((tier, i) => (
+              <motion.div
+                key={tier.k}
+                initial={{ opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.07 }}
+                className="border border-line rounded-md p-5 bg-card"
+              >
+                <div className="text-xs uppercase tracking-wide text-muted">
+                  Tier
                 </div>
-                <div className="text-xs text-muted mt-0.5">{v.tagline}</div>
-                <div className="text-xs text-muted mt-2">
-                  ★ {v.rating} · {v.reviewCount}
-                </div>
-              </Link>
+                <div className="font-display text-2xl mt-1">{tier.k}</div>
+                <div className="text-sm mt-3">{tier.v}</div>
+              </motion.div>
             ))}
           </div>
         </div>

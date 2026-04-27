@@ -46,13 +46,16 @@ export default function RootLayout({
                 — a guy for everything
               </div>
               <div className="flex gap-6">
-                <a href="#" className="hover:text-foreground">
+                <a href="#" className="hover:text-foreground transition">
                   About
                 </a>
-                <a href="#" className="hover:text-foreground">
+                <a
+                  href="/become-a-vendor"
+                  className="hover:text-foreground transition"
+                >
                   Become a vendor
                 </a>
-                <a href="#" className="hover:text-foreground">
+                <a href="#" className="hover:text-foreground transition">
                   Support
                 </a>
               </div>
